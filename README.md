@@ -44,6 +44,30 @@ This will return a JSON object with properties `value`, `unit` and `basis`, eg:
 
 See [sample/index.html](./sample/index.html) for a sample HTML implementation of the tenor calculator javascript utility which you can play around with.
 
+### Java Applications
+ In resources/js have the files tenor-calculator-java.js and tenor-calculator-esma-java.js
+ ### Usage Snippet:
+ ```java
+public class TenorCalculator {  
+    public Set<Map.Entry<String, Object>> calculateTenor(String effectiveDate, String expiryDate ) throws ScriptException,      NoSuchMethodException, IOException, URISyntaxException {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("JavaScript");
+        URL fileUrl = getClass().getResource("js/tenor-calculator-java.js");
+        engine.eval(Files.newBufferedReader(Paths.get(fileUrl.toURI()),StandardCharsets.UTF_8));
+        Invocable inv = (Invocable) engine;
+        ScriptObjectMirror scriptObjectMirror = (ScriptObjectMirror)inv.invokeFunction("calculateTenor", effectiveDate, expiryDate);
+        return scriptObjectMirror.entrySet();  
+    }
+}
+
+public static void main(String[] args) throws URISyntaxException, NoSuchMethodException, IOException, ScriptException {
+    TenorCalculator tenorCalculator = new TenorCalculator();
+    Set<Map.Entry<String, Object>> simpleImmutableEntry =   tenorCalculator.calculateTenor("2019-02-04", "2019-02-07");
+    simpleImmutableEntry.stream().forEach( simpleImmutableEntries ->
+          System.out.println(simpleImmutableEntries.getKey() + ":" + simpleImmutableEntries.getValue()));
+}
+  ```    
+
 ## References
 
 See links below for a more detailed documentation on how the Tenor Calculator works.
