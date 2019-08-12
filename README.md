@@ -67,6 +67,12 @@ public static void main(String[] args) throws URISyntaxException, NoSuchMethodEx
           System.out.println(simpleImmutableEntries.getKey() + ":" + simpleImmutableEntries.getValue()));
 }
   ```    
+### Output
+```
+value:3.0
+unit:DAYS
+basis:Whole Days
+```
 
 ## References
 
